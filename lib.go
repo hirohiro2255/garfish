@@ -65,33 +65,7 @@ type Board struct {
 func (b *Board) printBoard() {
 	for i := 2; i < 10; i++ {
 		for j := 2; j < 10; j++ {
-			piece := "."
-			if b.board[i][j] == WHITE|PAWN {
-				piece = "♙"
-			} else if b.board[i][j] == WHITE|KNIGHT {
-				piece = "♘"
-			} else if b.board[i][j] == WHITE|BISHOP {
-				piece = "♗"
-			} else if b.board[i][j] == WHITE|ROOK {
-				piece = "♖"
-			} else if b.board[i][j] == WHITE|QUEEN {
-				piece = "♕"
-			} else if b.board[i][j] == WHITE|KING {
-				piece = "♔"
-			} else if b.board[i][j] == BLACK|PAWN {
-				piece = "♟︎"
-			} else if b.board[i][j] == BLACK|KNIGHT {
-				piece = "♞"
-			} else if b.board[i][j] == BLACK|BISHOP {
-				piece = "♝"
-			} else if b.board[i][j] == BLACK|ROOK {
-				piece = "♜"
-			} else if b.board[i][j] == BLACK|QUEEN {
-				piece = "♛"
-			} else if b.board[i][j] == BLACK|KING {
-				piece = "♚"
-			}
-
+			piece := getPieceCharacter(b.board[i][j])
 			fmt.Print(piece, " ")
 		}
 		fmt.Println()
@@ -140,4 +114,33 @@ func newBoard() Board {
 	return Board{
 		board: b, toMove: WHITE,
 	}
+}
+
+func getPieceCharacter(piece uint8) string {
+	if piece == WHITE|PAWN {
+		return "♙"
+	} else if piece == WHITE|KNIGHT {
+		return "♘"
+	} else if piece == WHITE|BISHOP {
+		return "♗"
+	} else if piece == WHITE|ROOK {
+		return "♖"
+	} else if piece == WHITE|QUEEN {
+		return "♕"
+	} else if piece == WHITE|KING {
+		return "♔"
+	} else if piece == BLACK|PAWN {
+		return "♟︎"
+	} else if piece == BLACK|KNIGHT {
+		return "♞"
+	} else if piece == BLACK|BISHOP {
+		return "♝"
+	} else if piece == BLACK|ROOK {
+		return "♜"
+	} else if piece == BLACK|QUEEN {
+		return "♛"
+	} else if piece == BLACK|KING {
+		return "♚"
+	}
+	return "."
 }
