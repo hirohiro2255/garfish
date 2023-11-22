@@ -3,3 +3,6 @@ all: *.go
 
 run: garfish
 	./garfish
+
+test: *.go
+	go test -v
