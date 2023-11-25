@@ -65,12 +65,13 @@ type Board struct {
 }
 
 func (b *Board) printBoard() {
+	fmt.Println("a b c d e f g h")
 	for i := 2; i < 10; i++ {
 		for j := 2; j < 10; j++ {
 			piece := getPieceCharacter(b.board[i][j])
 			fmt.Print(piece, " ")
 		}
-		fmt.Println()
+		fmt.Println(" ", 10-i)
 	}
 }
 
