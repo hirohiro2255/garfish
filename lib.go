@@ -161,9 +161,26 @@ func boardFromFen(fen string) (*Board, error) {
 	}
 	fenConfig := strings.Split(fen, " ")
 	if len(fenConfig) != 6 {
+		return nil, errors.New("Could not parse fen string: Invalid fen string")
+	}
+	var toMove uint8
+	if fenConfig[1] == "w" {
+		toMove = WHITE
+	} else {
+		toMove = BLACK
+	}
+
+	/*
+		castlingPrivileges := fenConfig[2]
+		enPassant := fenConfig[3]
+		halfmoveClock := fenConfig[4]
+		fullmoveClock := fenConfig[5]
+	*/
+
+	fenRows := strings.Split(fenConfig[0], "/")
+	if len(fenRows) != 8 {
 		return nil, errors.New("Could not parse fen string: Invalid number of rows provided, 8 expected")
 	}
-	fenRows := strings.Split(fenConfig[0], "/")
 	row := 2
 	col := 2
 	for _, fenRow := range fenRows {
@@ -199,7 +216,7 @@ func boardFromFen(fen string) (*Board, error) {
 		col = 2
 	}
 	return &Board{
-		board: *b, toMove: WHITE,
+		board: *b, toMove: toMove,
 	}, nil
 }
 
