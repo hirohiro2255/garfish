@@ -69,8 +69,8 @@ func boardFromFen(fen string) (*Board, error) {
 	if len(fenRows) != 8 {
 		return nil, errors.New("Could not parse fen string: Invalid number of rows provided, 8 expected")
 	}
-	row := 2
-	col := 2
+	row := BOARD_START
+	col := BOARD_START
 	for _, fenRow := range fenRows {
 		for _, square := range fenRow {
 			if unicode.IsNumber(square) {
@@ -78,7 +78,7 @@ func boardFromFen(fen string) (*Board, error) {
 				if err != nil {
 					log.Fatal("Unable to convert to integer")
 				}
-				if squareSkipCount+col > 10 {
+				if squareSkipCount+col > BOARD_END {
 					log.Fatal("Could not parse fen string: Index out of bounds")
 				}
 				for squareSkipCount > 0 {
@@ -97,11 +97,11 @@ func boardFromFen(fen string) (*Board, error) {
 				col++
 			}
 		}
-		if col != 10 {
+		if col != BOARD_END {
 			log.Fatal("Could not parse fen string: Complete row was not specified")
 		}
 		row++
-		col = 2
+		col = BOARD_START
 	}
 	return &Board{
 		board: *b, toMove: toMove,

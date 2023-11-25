@@ -4,6 +4,9 @@ import (
 	"fmt"
 )
 
+const BOARD_START = 2
+const BOARD_END = 10
+
 const COLOR_MASK uint8 = 0b10000000
 const WHITE uint8 = 0b10000000
 const BLACK uint8 = 0b00000000
@@ -66,8 +69,8 @@ type Board struct {
 
 func (b *Board) printBoard() {
 	fmt.Println("a b c d e f g h")
-	for i := 2; i < 10; i++ {
-		for j := 2; j < 10; j++ {
+	for i := BOARD_START; i < BOARD_END; i++ {
+		for j := BOARD_START; j < BOARD_END; j++ {
 			piece := getPieceCharacter(b.board[i][j])
 			fmt.Print(piece, " ")
 		}
