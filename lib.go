@@ -1,6 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+	"log"
+	"strconv"
+	"strings"
+	"unicode"
+)
 
 const COLOR_MASK uint8 = 0b10000000
 const WHITE uint8 = 0b10000000
@@ -143,4 +150,86 @@ func getPieceCharacter(piece uint8) string {
 		return "♚"
 	}
 	return "."
+}
+
+func boardFromFen(fen string) (*Board, error) {
+	b := &[12][12]uint8{}
+	for i := 0; i < 12; i++ {
+		for j := 0; j < 12; j++ {
+			b[i][j] = SENTINEL
+		}
+	}
+	fenConfig := strings.Split(fen, " ")
+	if len(fenConfig) != 6 {
+		return nil, errors.New("Could not parse fen string: Invalid number of rows provided, 8 expected")
+	}
+	fenRows := strings.Split(fenConfig[0], "/")
+	row := 2
+	col := 2
+	for _, fenRow := range fenRows {
+		for _, square := range fenRow {
+			if unicode.IsNumber(square) {
+				squareSkipCount, err := strconv.Atoi(string(square))
+				if err != nil {
+					log.Fatal("Unable to convert to integer")
+				}
+				if squareSkipCount+col > 10 {
+					log.Fatal("Could not parse fen string: Index out of bounds")
+				}
+				for squareSkipCount > 0 {
+					b[row][col] = EMPTY
+					col++
+					squareSkipCount -= 1
+				}
+			} else {
+				piece := getPieceFromFenStringChar(square)
+				if piece != SENTINEL {
+					b[row][col] = piece
+				} else {
+					fmt.Println("piece:", piece)
+					log.Fatal("Could not parse fen string: Invalid character found")
+				}
+				col++
+			}
+		}
+		if col != 10 {
+			log.Fatal("Could not parse fen string: Complete row was not specified")
+		}
+		row++
+		col = 2
+	}
+	return &Board{
+		board: *b, toMove: WHITE,
+	}, nil
+}
+
+func getPieceFromFenStringChar(piece rune) uint8 {
+	if piece == 'p' {
+		return BLACK | PAWN
+	} else if piece == 'n' {
+		return BLACK | KNIGHT
+	} else if piece == 'b' {
+		return BLACK | BISHOP
+	} else if piece == 'r' {
+		return BLACK | ROOK
+	} else if piece == 'q' {
+		return BLACK | QUEEN
+	} else if piece == 'k' {
+		return BLACK | KING
+	} else if piece == 'P' {
+		return WHITE | PAWN
+	} else if piece == 'K' {
+		return WHITE | KNIGHT
+	} else if piece == 'B' {
+		return WHITE | BISHOP
+	} else if piece == 'N' {
+		return WHITE | KNIGHT
+	} else if piece == 'R' {
+		return WHITE | ROOK
+	} else if piece == 'Q' {
+		return WHITE | QUEEN
+	} else if piece == 'K' {
+		return WHITE | KING
+	}
+	return SENTINEL
 }
