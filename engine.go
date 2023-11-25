@@ -25,7 +25,7 @@ func getPieceFromFenStringChar(piece rune) uint8 {
 	} else if piece == 'P' {
 		return WHITE | PAWN
 	} else if piece == 'K' {
-		return WHITE | KNIGHT
+		return WHITE | KING
 	} else if piece == 'B' {
 		return WHITE | BISHOP
 	} else if piece == 'N' {
