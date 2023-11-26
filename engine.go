@@ -9,13 +9,43 @@ import (
 	"unicode"
 )
 
-func knightMoves(row int8, col int8, color uint8, board *Board, moves *[][]int8) {
+func pawnMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8) {
+	// white pawns move up board
+	if isWhite(piece) {
+		// check capture
+		leftCap := board.board[row-1][col-1]
+		rightCap := board.board[row-1][col+1]
+		if !isOutsideBoard(leftCap) && isBlack(leftCap) {
+			to_cord := [][]int8{{row - 1, col - 1}}
+			*moves = append(*moves, to_cord...)
+		}
+		if !isOutsideBoard(rightCap) && isBlack(rightCap) {
+			to_cord := [][]int8{{row - 1, col + 1}}
+			*moves = append(*moves, to_cord...)
+		}
+
+		// check a normal push
+		if isEmpty(board.board[row-1][col]) {
+			toCord := []int8{row - 1, col}
+			*moves = append(*moves, toCord)
+		}
+
+		// check a double push
+		if row == 8 && isEmpty(board.board[row-2][col]) {
+			*moves = append(*moves, []int8{row - 2, col})
+		}
+	} else {
+
+	}
+}
+
+func knightMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8) {
 	cords := [][]int8{{1, 2}, {1, -2}, {2, 1}, {2, -1}, {-1, 2}, {-1, -2}, {-2, -1}, {-2, 1}}
 	for _, mods := range cords {
 		_row := row + mods[0]
 		_col := col + mods[1]
 		space := board.board[_row][_col]
-		if isEmpty(space) || (space&COLOR_MASK) != color {
+		if isEmpty(space) || (space&COLOR_MASK) != piece&COLOR_MASK {
 			to_cord := [][]int8{{_row, _col}}
 			*moves = append(*moves, to_cord...)
 		}

@@ -23,11 +23,11 @@ const EMPTY uint8 = 0
 const SENTINEL uint8 = 0b11111111
 
 func isWhite(square uint8) bool {
-	return square&COLOR_MASK == WHITE
+	return !isEmpty(square) && square&COLOR_MASK == WHITE
 }
 
 func isBlack(square uint8) bool {
-	return !isWhite(square)
+	return !isEmpty(square) && square&COLOR_MASK == BLACK
 }
 
 func isPawn(square uint8) bool {

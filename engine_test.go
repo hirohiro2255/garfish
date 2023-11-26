@@ -101,7 +101,7 @@ func TestKnightMovesEmptyBoard(t *testing.T) {
 	var row int8 = 6
 	var col int8 = 5
 	ret := [][]int8{}
-	knightMoves(row, col, WHITE, b, &ret)
+	knightMoves(row, col, WHITE|KNIGHT, b, &ret)
 	assert.Equal(t, 8, len(ret))
 }
 
@@ -113,7 +113,7 @@ func TestKnightMovesCorner(t *testing.T) {
 	var row int8 = 2
 	var col int8 = 2
 	ret := [][]int8{}
-	knightMoves(row, col, WHITE, b, &ret)
+	knightMoves(row, col, WHITE|KNIGHT, b, &ret)
 	assert.Equal(t, 2, len(ret))
 }
 
@@ -125,6 +125,67 @@ func TestKnightMovesWithOtherPiecesWithCapture(t *testing.T) {
 	var row int8 = 5
 	var col int8 = 5
 	ret := [][]int8{}
-	knightMoves(row, col, WHITE, b, &ret)
+	knightMoves(row, col, WHITE|KNIGHT, b, &ret)
 	assert.Equal(t, 7, len(ret))
+}
+
+func TestWhitePawnStart(t *testing.T) {
+	b, err := boardFromFen("8/8/8/8/8/8/P7/8 w - - 0 1")
+	if err != nil {
+		log.Fatal("Unable to read fen string")
+	}
+	var row int8 = 8
+	var col int8 = 2
+	ret := [][]int8{}
+	pawnMoves(row, col, WHITE|PAWN, b, &ret)
+	assert.Equal(t, 2, len(ret))
+}
+
+func TestWhitePawnhasMoved(t *testing.T) {
+	b, err := boardFromFen("8/8/8/8/8/3P4/8/8 w - - 0 1")
+	if err != nil {
+		log.Fatal("Unable to read fen string")
+	}
+	var row int8 = 7
+	var col int8 = 5
+	ret := [][]int8{}
+	pawnMoves(row, col, WHITE|PAWN, b, &ret)
+	assert.Equal(t, 1, len(ret))
+}
+
+func TestWhitePawnCantMoveBlackPieceBlock(t *testing.T) {
+	b, _ := boardFromFen("8/8/8/8/3r4/3P4/8/8 w - - 0 1")
+	var row int8 = 7
+	var col int8 = 5
+	ret := [][]int8{}
+	pawnMoves(row, col, WHITE|PAWN, b, &ret)
+	assert.Equal(t, 0, len(ret))
+}
+
+func TestWhitePawnCantMoveWhitePieceBlock(t *testing.T) {
+	b, _ := boardFromFen("8/8/8/8/3K4/3P4/8/8 w - - 0 1")
+	var row int8 = 7
+	var col int8 = 5
+	ret := [][]int8{}
+	pawnMoves(row, col, WHITE|PAWN, b, &ret)
+	assert.Equal(t, 0, len(ret))
+}
+
+func TestWhitePawnWithTwoCapturesAndStart(t *testing.T) {
+	b, _ := boardFromFen("8/8/8/8/8/n1q5/1P6/8 w - - 0 1")
+	var row int8 = 8
+	var col int8 = 3
+	ret := [][]int8{}
+	pawnMoves(row, col, WHITE|PAWN, b, &ret)
+	assert.Equal(t, 4, len(ret))
+}
+
+func TestWhitePawnWithOneCapture(t *testing.T) {
+	b, _ := boardFromFen("8/8/Q1b5/1P6/8/8/8/8 w - - 0 1")
+	var row int8 = 5
+	var col int8 = 3
+	ret := [][]int8{}
+	pawnMoves(row, col, WHITE|PAWN, b, &ret)
+	assert.Equal(t, 2, len(ret))
+
 }
