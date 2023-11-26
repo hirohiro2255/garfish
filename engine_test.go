@@ -243,3 +243,39 @@ func TestBlackPawnWithOneCapture(t *testing.T) {
 	pawnMoves(row, col, BLACK|PAWN, b, &ret)
 	assert.Equal(t, 1, len(ret))
 }
+
+func TestKingEmptyBoardCenter(t *testing.T) {
+	b, _ := boardFromFen("8/8/8/8/3K4/8/8/8 w - - 0 1")
+	var row int8 = 5
+	var col int8 = 6
+	ret := [][]int8{}
+	kingMoves(row, col, WHITE|KING, b, &ret)
+	assert.Equal(t, 8, len(ret))
+}
+
+func TestKingStartPos(t *testing.T) {
+	b, _ := boardFromFen("8/8/8/8/8/8/8/4K3 w - - 0 1")
+	var row int8 = 9
+	var col int8 = 6
+	ret := [][]int8{}
+	kingMoves(row, col, WHITE|KING, b, &ret)
+	assert.Equal(t, 5, len(ret))
+}
+
+func TestStartPosOtherPieces(t *testing.T) {
+	b, _ := boardFromFen("8/8/8/8/8/8/3Pn3/3QKB2 w - - 0 1")
+	var row int8 = 9
+	var col int8 = 6
+	ret := [][]int8{}
+	kingMoves(row, col, WHITE|KING, b, &ret)
+	assert.Equal(t, 2, len(ret))
+}
+
+func TestKingBlackOtherPieces(t *testing.T) {
+	b, _ := boardFromFen("8/8/8/8/8/3Pn3/3QkB2/3R1q2 w - - 0 1")
+	var row int8 = 8
+	var col int8 = 6
+	ret := [][]int8{}
+	kingMoves(row, col, BLACK|KING, b, &ret)
+	assert.Equal(t, 6, len(ret))
+}

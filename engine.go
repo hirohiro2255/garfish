@@ -9,6 +9,24 @@ import (
 	"unicode"
 )
 
+func kingMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8) {
+	for i := -1; i < 2; i++ {
+		for j := -1; j < 2; j++ {
+			r := row + int8(i)
+			c := col + int8(j)
+
+			if isOutsideBoard(board.board[r][c]) {
+				continue
+			}
+
+			if isEmpty(board.board[r][c]) || board.board[r][c]&COLOR_MASK != piece&COLOR_MASK {
+				*moves = append(*moves, []int8{r, c})
+			}
+
+		}
+	}
+}
+
 func pawnMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8) {
 	// white pawns move up board
 	if isWhite(piece) {
@@ -64,6 +82,9 @@ func knightMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8)
 		_row := row + mods[0]
 		_col := col + mods[1]
 		space := board.board[_row][_col]
+		if isOutsideBoard(space) {
+			continue
+		}
 		if isEmpty(space) || (space&COLOR_MASK) != piece&COLOR_MASK {
 			to_cord := [][]int8{{_row, _col}}
 			*moves = append(*moves, to_cord...)
