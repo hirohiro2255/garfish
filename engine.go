@@ -31,11 +31,30 @@ func pawnMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8) {
 		}
 
 		// check a double push
-		if row == 8 && isEmpty(board.board[row-2][col]) {
+		if row == 8 && isEmpty(board.board[row-1][col]) && isEmpty(board.board[row-2][col]) {
 			*moves = append(*moves, []int8{row - 2, col})
 		}
 	} else {
+		// black to move
+		// check capture
+		leftCap := board.board[row+1][col+1]
+		rightCap := board.board[row+1][col-1]
+		if !isOutsideBoard(leftCap) && isWhite(leftCap) {
+			*moves = append(*moves, []int8{row + 1, col + 1})
+		}
+		if !isOutsideBoard(rightCap) && isWhite(rightCap) {
+			*moves = append(*moves, []int8{row + 1, col - 1})
+		}
 
+		// check a normal push
+		if isEmpty(board.board[row+1][col]) {
+			*moves = append(*moves, []int8{row + 1, col})
+		}
+
+		// check a double push
+		if row == 3 && isEmpty(board.board[row+1][col]) && isEmpty(board.board[row+2][col]) {
+			*moves = append(*moves, []int8{row + 2, col})
+		}
 	}
 }
 

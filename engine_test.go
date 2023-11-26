@@ -189,3 +189,57 @@ func TestWhitePawnWithOneCapture(t *testing.T) {
 	assert.Equal(t, 2, len(ret))
 
 }
+
+func TestWhitePawnDoublePushPieceInFront(t *testing.T) {
+	b, _ := boardFromFen("8/8/8/8/8/b7/P7/8 w - - 0 1")
+	var row int8 = 8
+	var col int8 = 2
+	ret := [][]int8{}
+	pawnMoves(row, col, WHITE|PAWN, b, &ret)
+	assert.Equal(t, 0, len(ret))
+}
+
+func TestBlackPawnDoublePush(t *testing.T) {
+	b, _ := boardFromFen("8/p7/8/8/8/8/8/8 w - - 0 1")
+	var row int8 = 3
+	var col int8 = 2
+	ret := [][]int8{}
+	pawnMoves(row, col, BLACK|PAWN, b, &ret)
+	assert.Equal(t, 2, len(ret))
+}
+
+func TestBlackPawnHasMoved(t *testing.T) {
+	b, _ := boardFromFen("8/8/8/3p4/8/8/8/8 w - - 0 1")
+	var row int8 = 5
+	var col int8 = 5
+	ret := [][]int8{}
+	pawnMoves(row, col, BLACK|PAWN, b, &ret)
+	assert.Equal(t, 1, len(ret))
+}
+
+func TestBlackPawnCantMoveWhitePieceBlock(t *testing.T) {
+	b, _ := boardFromFen("8/3p4/3R4/8/8/8/8/8 w - - 0 1")
+	var row int8 = 3
+	var col int8 = 5
+	ret := [][]int8{}
+	pawnMoves(row, col, BLACK|PAWN, b, &ret)
+	assert.Equal(t, 0, len(ret))
+}
+
+func TestBlackPawnWithTwoCapturesAndStart(t *testing.T) {
+	b, _ := boardFromFen("8/3p4/2R1R3/8/8/8/8/8 w - - 0 1")
+	var row int8 = 3
+	var col int8 = 5
+	ret := [][]int8{}
+	pawnMoves(row, col, BLACK|PAWN, b, &ret)
+	assert.Equal(t, 4, len(ret))
+}
+
+func TestBlackPawnWithOneCapture(t *testing.T) {
+	b, _ := boardFromFen("8/3p4/3qR3/8/8/8/8/8 w - - 0 1")
+	var row int8 = 3
+	var col int8 = 5
+	ret := [][]int8{}
+	pawnMoves(row, col, BLACK|PAWN, b, &ret)
+	assert.Equal(t, 1, len(ret))
+}
