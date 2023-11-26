@@ -9,6 +9,19 @@ import (
 	"unicode"
 )
 
+func knightMoves(row int8, col int8, color uint8, board *Board, moves *[][]int8) {
+	cords := [][]int8{{1, 2}, {1, -2}, {2, 1}, {2, -1}, {-1, 2}, {-1, -2}, {-2, -1}, {-2, 1}}
+	for _, mods := range cords {
+		_row := row + mods[0]
+		_col := col + mods[1]
+		space := board.board[_row][_col]
+		if isEmpty(space) || (space&COLOR_MASK) != color {
+			to_cord := [][]int8{{_row, _col}}
+			*moves = append(*moves, to_cord...)
+		}
+	}
+}
+
 func getPieceFromFenStringChar(piece rune) uint8 {
 	if piece == 'p' {
 		return BLACK | PAWN

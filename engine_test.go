@@ -91,5 +91,40 @@ func TestRandomPos(t *testing.T) {
 	assert.Equal(t, WHITE|PAWN, b.board[8][6])
 	assert.Equal(t, WHITE|KNIGHT, b.board[9][6])
 	assert.Equal(t, BLACK|BISHOP, b.board[9][8])
+}
 
+func TestKnightMovesEmptyBoard(t *testing.T) {
+	b, err := boardFromFen("8/8/8/8/3N4/8/8/8 w - - 0 1")
+	if err != nil {
+		log.Fatal("Unable to read fen string")
+	}
+	var row int8 = 6
+	var col int8 = 5
+	ret := [][]int8{}
+	knightMoves(row, col, WHITE, b, &ret)
+	assert.Equal(t, 8, len(ret))
+}
+
+func TestKnightMovesCorner(t *testing.T) {
+	b, err := boardFromFen("N7/8/8/8/8/8/8/8 w - - 0 1")
+	if err != nil {
+		log.Fatal("Unable to read fen string")
+	}
+	var row int8 = 2
+	var col int8 = 2
+	ret := [][]int8{}
+	knightMoves(row, col, WHITE, b, &ret)
+	assert.Equal(t, 2, len(ret))
+}
+
+func TestKnightMovesWithOtherPiecesWithCapture(t *testing.T) {
+	b, err := boardFromFen("8/8/5n2/3NQ3/2K2P2/8/8/8 w - - 0 1")
+	if err != nil {
+		log.Fatal("Unable to read fen string")
+	}
+	var row int8 = 5
+	var col int8 = 5
+	ret := [][]int8{}
+	knightMoves(row, col, WHITE, b, &ret)
+	assert.Equal(t, 7, len(ret))
 }

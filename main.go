@@ -3,10 +3,14 @@ package main
 import "fmt"
 
 func main() {
-	b, err := boardFromFen(DEFAULT_POS)
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		b.printBoard()
-	}
+	slice := []int{1, 2, 3}
+	fmt.Println(slice)
+
+	slice = add(slice)
+	fmt.Println(slice)
+}
+
+func add(a []int) []int {
+	a = append(a, 4)
+	return a
 }
