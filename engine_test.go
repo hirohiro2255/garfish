@@ -324,3 +324,13 @@ func TestBlackRookCenterOfBoardWithWhitePieces(t *testing.T) {
 	rookMoves(row, col, BLACK|ROOK, b, &ret)
 	assert.Equal(t, 7, len(ret))
 }
+
+func TestBlackBishopCenterEmptyBoard(t *testing.T) {
+	b, _ := boardFromFen("8/8/8/3b4/8/8/8/8 w - - 0 1")
+	var row int8 = 5
+	var col int8 = 5
+	ret := [][]int8{}
+	bishopMoves(row, col, BLACK|BISHOP, b, &ret)
+	assert.Equal(t, 13, len(ret))
+
+}

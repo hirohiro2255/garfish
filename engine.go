@@ -9,6 +9,30 @@ import (
 	"unicode"
 )
 
+func bishopMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8) {
+	mods := [2]int8{1, -1}
+	for _, i := range mods {
+		for _, j := range mods {
+			var multiplier int8 = 1
+			_row := row + i
+			_col := col + j
+			square := board.board[_row][_col]
+			for isEmpty(square) {
+				*moves = append(*moves, []int8{_row, _col})
+				multiplier++
+				_row = row + (i * multiplier)
+				_col = col + (j * multiplier)
+				square = board.board[_row][_col]
+			}
+
+			if !isOutsideBoard(square) && piece&COLOR_MASK != square&COLOR_MASK {
+				*moves = append(*moves, []int8{_row, _col})
+			}
+
+		}
+	}
+}
+
 func rookMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8) {
 	rowStart := row + 1
 	for isEmpty(board.board[rowStart][col]) {
