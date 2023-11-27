@@ -279,3 +279,48 @@ func TestKingBlackOtherPieces(t *testing.T) {
 	kingMoves(row, col, BLACK|KING, b, &ret)
 	assert.Equal(t, 6, len(ret))
 }
+
+func TestRookCenterOfEmptyBoard(t *testing.T) {
+	b, _ := boardFromFen("8/8/8/8/3R4/8/8/8 w - - 0 1")
+	var row int8 = 6
+	var col int8 = 5
+	ret := [][]int8{}
+	rookMoves(row, col, WHITE|ROOK, b, &ret)
+	assert.Equal(t, 14, len(ret))
+}
+
+func TestRookCenterOfBoard(t *testing.T) {
+	b, _ := boardFromFen("8/8/8/3q4/2kRp3/3b4/8/8 w - - 0 1")
+	var row int8 = 6
+	var col int8 = 5
+	ret := [][]int8{}
+	rookMoves(row, col, WHITE|ROOK, b, &ret)
+	assert.Equal(t, 4, len(ret))
+}
+
+func TestRookCenterOfBoardWithWhitePieces(t *testing.T) {
+	b, _ := boardFromFen("7p/3N4/8/4n3/2kR4/3b4/8/8 w - - 0 1")
+	var row int8 = 6
+	var col int8 = 5
+	ret := [][]int8{}
+	rookMoves(row, col, WHITE|ROOK, b, &ret)
+	assert.Equal(t, 8, len(ret))
+}
+
+func TestRookCorner(t *testing.T) {
+	b, _ := boardFromFen("7p/3N4/8/4n3/2kR4/3b4/8/8 w - - 0 1")
+	var row int8 = 9
+	var col int8 = 9
+	ret := [][]int8{}
+	rookMoves(row, col, WHITE|ROOK, b, &ret)
+	assert.Equal(t, 14, len(ret))
+}
+
+func TestBlackRookCenterOfBoardWithWhitePieces(t *testing.T) {
+	b, _ := boardFromFen("7p/3N4/8/4n3/2kR4/3b4/8/8 w - - 0 1")
+	var row int8 = 6
+	var col int8 = 5
+	ret := [][]int8{}
+	rookMoves(row, col, BLACK|ROOK, b, &ret)
+	assert.Equal(t, 7, len(ret))
+}

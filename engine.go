@@ -9,6 +9,47 @@ import (
 	"unicode"
 )
 
+func rookMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8) {
+	rowStart := row + 1
+	for isEmpty(board.board[rowStart][col]) {
+		*moves = append(*moves, []int8{rowStart, col})
+		rowStart++
+	}
+
+	if !isOutsideBoard(board.board[rowStart][col]) && piece&COLOR_MASK != board.board[rowStart][col]&COLOR_MASK {
+		*moves = append(*moves, []int8{rowStart + 1, col})
+	}
+
+	rowStart = row - 1
+	for isEmpty(board.board[rowStart][col]) {
+		*moves = append(*moves, []int8{rowStart, col})
+		rowStart--
+	}
+	if !isOutsideBoard(board.board[rowStart][col]) && piece&COLOR_MASK != board.board[rowStart][col]&COLOR_MASK {
+		*moves = append(*moves, []int8{rowStart - 1, col})
+	}
+
+	colStart := col + 1
+	for isEmpty(board.board[row][colStart]) {
+		*moves = append(*moves, []int8{row, colStart})
+		colStart++
+	}
+
+	if !isOutsideBoard(board.board[row][colStart]) && piece&COLOR_MASK != board.board[row][colStart]&COLOR_MASK {
+		*moves = append(*moves, []int8{row, colStart + 1})
+	}
+
+	colStart = col - 1
+	for isEmpty(board.board[row][colStart]) {
+		*moves = append(*moves, []int8{row, colStart})
+		colStart--
+	}
+
+	if !isOutsideBoard(board.board[row][colStart]) && piece&COLOR_MASK != board.board[row][colStart]&COLOR_MASK {
+		*moves = append(*moves, []int8{row, colStart - 1})
+	}
+}
+
 func kingMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8) {
 	for i := -1; i < 2; i++ {
 		for j := -1; j < 2; j++ {
