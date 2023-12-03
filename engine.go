@@ -9,6 +9,11 @@ import (
 	"unicode"
 )
 
+func queenMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8) {
+	rookMoves(row, col, piece, board, moves)
+	bishopMoves(row, col, piece, board, moves)
+}
+
 func bishopMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8) {
 	mods := [2]int8{1, -1}
 	for _, i := range mods {

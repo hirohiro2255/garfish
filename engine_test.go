@@ -360,3 +360,30 @@ func TestWhiteBishopCenterWithCapturesAndWhitePieces(t *testing.T) {
 	bishopMoves(row, col, WHITE|BISHOP, b, &ret)
 	assert.Equal(t, 6, len(ret))
 }
+
+func TestWhiteQueenEmptyBoard(t *testing.T) {
+	b, _ := boardFromFen("8/8/8/8/3Q4/8/8/8 w - - 0 1")
+	var row int8 = 6
+	var col int8 = 5
+	ret := [][]int8{}
+	queenMoves(row, col, WHITE|QUEEN, b, &ret)
+	assert.Equal(t, 27, len(ret))
+}
+
+func TestWhiteQueenCantMove(t *testing.T) {
+	b, _ := boardFromFen("8/8/8/2NBR3/2PQR3/2RRR3/8/8 w - - 0 1")
+	var row int8 = 6
+	var col int8 = 5
+	ret := [][]int8{}
+	queenMoves(row, col, WHITE|QUEEN, b, &ret)
+	assert.Equal(t, 0, len(ret))
+}
+
+func TestWhiteQueenWithOtherPiece(t *testing.T) {
+	b, _ := boardFromFen("8/6r1/8/8/3Q4/5N2/8/6P1 w - - 0 1")
+	var row int8 = 6
+	var col int8 = 5
+	ret := [][]int8{}
+	queenMoves(row, col, WHITE|QUEEN, b, &ret)
+	assert.Equal(t, 25, len(ret))
+}
