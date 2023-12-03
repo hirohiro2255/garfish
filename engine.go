@@ -34,58 +34,38 @@ func bishopMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8)
 }
 
 func rookMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8) {
-	rowStart := row + 1
-	for isEmpty(board.board[rowStart][col]) {
-		*moves = append(*moves, []int8{rowStart, col})
-		rowStart++
-	}
+	mods := [][]int8{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+	for _, m := range mods {
+		multiplier := 1
+		_row := row + m[0]
+		_col := col + m[1]
+		square := board.board[_row][_col]
+		for isEmpty(square) {
+			*moves = append(*moves, []int8{_row, _col})
+			multiplier++
+			_row = row + (m[0] * int8(multiplier))
+			_col = col + (m[1] * int8(multiplier))
+			square = board.board[_row][_col]
+		}
 
-	if !isOutsideBoard(board.board[rowStart][col]) && piece&COLOR_MASK != board.board[rowStart][col]&COLOR_MASK {
-		*moves = append(*moves, []int8{rowStart + 1, col})
-	}
-
-	rowStart = row - 1
-	for isEmpty(board.board[rowStart][col]) {
-		*moves = append(*moves, []int8{rowStart, col})
-		rowStart--
-	}
-	if !isOutsideBoard(board.board[rowStart][col]) && piece&COLOR_MASK != board.board[rowStart][col]&COLOR_MASK {
-		*moves = append(*moves, []int8{rowStart - 1, col})
-	}
-
-	colStart := col + 1
-	for isEmpty(board.board[row][colStart]) {
-		*moves = append(*moves, []int8{row, colStart})
-		colStart++
-	}
-
-	if !isOutsideBoard(board.board[row][colStart]) && piece&COLOR_MASK != board.board[row][colStart]&COLOR_MASK {
-		*moves = append(*moves, []int8{row, colStart + 1})
-	}
-
-	colStart = col - 1
-	for isEmpty(board.board[row][colStart]) {
-		*moves = append(*moves, []int8{row, colStart})
-		colStart--
-	}
-
-	if !isOutsideBoard(board.board[row][colStart]) && piece&COLOR_MASK != board.board[row][colStart]&COLOR_MASK {
-		*moves = append(*moves, []int8{row, colStart - 1})
+		if !isOutsideBoard(square) && piece&COLOR_MASK != square&COLOR_MASK {
+			*moves = append(*moves, []int8{_row, _col})
+		}
 	}
 }
 
 func kingMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8) {
 	for i := -1; i < 2; i++ {
 		for j := -1; j < 2; j++ {
-			r := row + int8(i)
-			c := col + int8(j)
+			_row := row + int8(i)
+			_col := col + int8(j)
 
-			if isOutsideBoard(board.board[r][c]) {
+			if isOutsideBoard(board.board[_row][_col]) {
 				continue
 			}
 
-			if isEmpty(board.board[r][c]) || board.board[r][c]&COLOR_MASK != piece&COLOR_MASK {
-				*moves = append(*moves, []int8{r, c})
+			if isEmpty(board.board[_row][_col]) || board.board[_row][_col]&COLOR_MASK != piece&COLOR_MASK {
+				*moves = append(*moves, []int8{_row, _col})
 			}
 
 		}
@@ -146,11 +126,11 @@ func knightMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8)
 	for _, mods := range cords {
 		_row := row + mods[0]
 		_col := col + mods[1]
-		space := board.board[_row][_col]
-		if isOutsideBoard(space) {
+		square := board.board[_row][_col]
+		if isOutsideBoard(square) {
 			continue
 		}
-		if isEmpty(space) || (space&COLOR_MASK) != piece&COLOR_MASK {
+		if isEmpty(square) || (square&COLOR_MASK) != piece&COLOR_MASK {
 			to_cord := [][]int8{{_row, _col}}
 			*moves = append(*moves, to_cord...)
 		}
