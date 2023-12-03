@@ -332,5 +332,31 @@ func TestBlackBishopCenterEmptyBoard(t *testing.T) {
 	ret := [][]int8{}
 	bishopMoves(row, col, BLACK|BISHOP, b, &ret)
 	assert.Equal(t, 13, len(ret))
+}
 
+func TestBlackBishopCenterWithCaptures(t *testing.T) {
+	b, _ := boardFromFen("6P1/8/8/3b4/8/1R6/8/3Q4 w - - 0 1")
+	var row int8 = 5
+	var col int8 = 5
+	ret := [][]int8{}
+	bishopMoves(row, col, BLACK|BISHOP, b, &ret)
+	assert.Equal(t, 12, len(ret))
+}
+
+func TestBlackBishopCenterWithCapturesAndPieces(t *testing.T) {
+	b, _ := boardFromFen("6P1/8/2Q5/3b4/2k1n3/1R6/8/b2Q4 w - - 0 1")
+	var row int8 = 5
+	var col int8 = 5
+	ret := [][]int8{}
+	bishopMoves(row, col, BLACK|BISHOP, b, &ret)
+	assert.Equal(t, 4, len(ret))
+}
+
+func TestWhiteBishopCenterWithCapturesAndWhitePieces(t *testing.T) {
+	b, _ := boardFromFen("8/8/8/4r3/5B2/8/3Q4/8 w - - 0 1")
+	var row int8 = 6
+	var col int8 = 7
+	ret := [][]int8{}
+	bishopMoves(row, col, WHITE|BISHOP, b, &ret)
+	assert.Equal(t, 6, len(ret))
 }
