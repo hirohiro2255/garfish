@@ -63,8 +63,10 @@ func isOutsideBoard(square uint8) bool {
 }
 
 type Board struct {
-	board  [12][12]uint8
-	toMove uint8
+	board             [12][12]uint8
+	toMove            uint8
+	whiteKingLocation [2]int
+	blackKingLocation [2]int
 }
 
 func (b *Board) printBoard() {

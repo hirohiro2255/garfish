@@ -217,6 +217,9 @@ func boardFromFen(fen string) (*Board, error) {
 		fullmoveClock := fenConfig[5]
 	*/
 
+	whiteKingLocation := [2]int{0, 0}
+	blackKingLocation := [2]int{0, 0}
+
 	fenRows := strings.Split(fenConfig[0], "/")
 	if len(fenRows) != 8 {
 		return nil, errors.New("Could not parse fen string: Invalid number of rows provided, 8 expected")
@@ -246,6 +249,15 @@ func boardFromFen(fen string) (*Board, error) {
 					fmt.Println("piece:", piece)
 					log.Fatal("Could not parse fen string: Invalid character found")
 				}
+
+				if isKing(b[row][col]) {
+					if isWhite(b[row][col]) {
+						whiteKingLocation = [2]int{row, col}
+					} else {
+						blackKingLocation = [2]int{row, col}
+					}
+				}
+
 				col++
 			}
 		}
@@ -257,5 +269,6 @@ func boardFromFen(fen string) (*Board, error) {
 	}
 	return &Board{
 		board: *b, toMove: toMove,
+		whiteKingLocation: whiteKingLocation, blackKingLocation: blackKingLocation,
 	}, nil
 }

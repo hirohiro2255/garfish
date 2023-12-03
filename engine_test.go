@@ -400,3 +400,19 @@ func TestPerftDepthOne(t *testing.T) {
 	}
 	assert.Equal(t, 20, len(moves))
 }
+
+func TestCorrectKingLocation(t *testing.T) {
+	b, _ := boardFromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+	assert.Equal(t, b.whiteKingLocation[0], 9)
+	assert.Equal(t, b.whiteKingLocation[1], 6)
+	assert.Equal(t, b.blackKingLocation[0], 2)
+	assert.Equal(t, b.blackKingLocation[1], 6)
+}
+
+func TestCorrectKingLocationTwo(t *testing.T) {
+	b, _ := boardFromFen("6rk/1b4np/5pp1/1p6/8/1P3NP1/1B3P1P/5RK1 w KQkq - 0 1")
+	assert.Equal(t, b.whiteKingLocation[0], 9)
+	assert.Equal(t, b.whiteKingLocation[1], 8)
+	assert.Equal(t, b.blackKingLocation[0], 2)
+	assert.Equal(t, b.blackKingLocation[1], 9)
+}
