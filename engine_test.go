@@ -387,3 +387,16 @@ func TestWhiteQueenWithOtherPiece(t *testing.T) {
 	queenMoves(row, col, WHITE|QUEEN, b, &ret)
 	assert.Equal(t, 25, len(ret))
 }
+
+func TestPerftDepthOne(t *testing.T) {
+	b, _ := boardFromFen(DEFAULT_POS)
+	moves := [][]int8{}
+	for i := BOARD_START; i < BOARD_END; i++ {
+		for j := BOARD_START; j < BOARD_END; j++ {
+			if isWhite(b.board[i][j]) {
+				getMoves(int8(i), int8(j), b.board[i][j], b, &moves)
+			}
+		}
+	}
+	assert.Equal(t, 20, len(moves))
+}

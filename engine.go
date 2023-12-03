@@ -9,6 +9,25 @@ import (
 	"unicode"
 )
 
+func getMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8) {
+	targetPiece := piece & PIECE_MASK
+	if targetPiece == PAWN {
+		pawnMoves(row, col, piece, board, moves)
+	} else if targetPiece == ROOK {
+		rookMoves(row, col, piece, board, moves)
+	} else if targetPiece == BISHOP {
+		bishopMoves(row, col, piece, board, moves)
+	} else if targetPiece == KNIGHT {
+		knightMoves(row, col, piece, board, moves)
+	} else if targetPiece == KING {
+		kingMoves(row, col, piece, board, moves)
+	} else if targetPiece == QUEEN {
+		queenMoves(row, col, piece, board, moves)
+	} else {
+		panic("Unrecognized piece")
+	}
+}
+
 func queenMoves(row int8, col int8, piece uint8, board *Board, moves *[][]int8) {
 	rookMoves(row, col, piece, board, moves)
 	bishopMoves(row, col, piece, board, moves)
